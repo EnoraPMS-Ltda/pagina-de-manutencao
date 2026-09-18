@@ -107,6 +107,29 @@
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                     y="0px" viewBox=" 0 90 500 260"  xml:space="preserve">
                     <style type="text/css">
+                        .datetime-container {
+            margin-bottom: 3rem;
+            color: #106797; /* Azul combinando com a identidade da imagem */
+        }
+        #clock {
+            font-size: 4.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            font-variant-numeric: tabular-nums; /* Mantém os números alinhados para não tremer */
+        }
+        #date {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #405B91;
+            text-transform: capitalize;
+        }
+
+        /* Ajustes para telas menores (adicionar dentro do seu @media max-width: 480px) */
+        @media screen and (max-width: 480px){
+            #clock { font-size: 8vw; }
+            #date { font-size: 14px; }
+        }
                         .st0 {
                             fill: #FFFFFF;
                         }
@@ -1561,6 +1584,10 @@
                     </g>
                 </svg>
             </div>
+                        <div class="datetime-container">
+                <div id="clock">00:00:00</div>
+                <div id="date">Carregando data...</div>
+            </div>
             <p class="text">Estamos trabalhando para trazer uma nova experiência para você!</p>
         </div>
     </section>
@@ -1647,7 +1674,42 @@
         </div>
         <p>Voltaremos com essa pagina em breve!</p>
     </footer>
+<script>
+        function updateDateTime() {
+            const now = new Date();
 
+            // Configuração para forçar o fuso horário de Manaus
+            const timeOptions = {
+                timeZone: 'America/Manaus',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+
+            const dateOptions = {
+                timeZone: 'America/Manaus',
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+
+            // Formatadores nativos do JavaScript
+            const timeFormatter = new Intl.DateTimeFormat('pt-BR', timeOptions);
+            const dateFormatter = new Intl.DateTimeFormat('pt-BR', dateOptions);
+
+            // Atualiza os elementos na tela
+            document.getElementById('clock').textContent = timeFormatter.format(now);
+            document.getElementById('date').textContent = dateFormatter.format(now);
+        }
+
+        // Chama a função pela primeira vez para evitar delay na tela
+        updateDateTime();
+        
+        // Atualiza a cada 1 segundo (1000 milissegundos)
+        setInterval(updateDateTime, 1000);
+    </script>
 </body>
 
 </html>
